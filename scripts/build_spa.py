@@ -476,19 +476,19 @@ for key in ['login', 'dashboard', 'complaints', 'returns', 'expenses', 'store']:
     cls = "w-full h-screen" + (" flex" if key != "login" else "")
     parts.append(f'<div id="page-{key}" class="{cls}" style="display:{display}">\n{bodies[key]}\n</div>')
 
-html_out = f"""<!DOCTYPE html>
+html_out = """<!DOCTYPE html>
 <html class="dark" lang="tr">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AgentSync AI | Kontrol Merkezi</title>
-{shared_head}
+{{SHARED_HEAD}}
 </head>
 <body class="bg-background text-on-background font-body-md antialiased">
-{''.join(parts)}
-{nav_js}
+{{PARTS}}
+{{NAV_JS}}
 </body>
-</html>"""
+</html>""".replace("{{SHARED_HEAD}}", shared_head).replace("{{PARTS}}", ''.join(parts)).replace("{{NAV_JS}}", nav_js)
 
 os.makedirs('app/static', exist_ok=True)
 with open('app/static/index.html', 'w', encoding='utf-8') as f:
