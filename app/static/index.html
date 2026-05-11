@@ -1549,32 +1549,37 @@ function showPage(id) {
 
 function setupNav(role) {
   const navItems = [
-    { text: "dashboard",  id: "dashboard" },
-    { text: "complaints", id: "complaints" },
-    { text: "returns",    id: "returns" },
-    { text: "expenses",   id: "expenses" },
-    { text: "store",      id: "store" }
+    { texts: ["dashboard", "panel"], id: "dashboard" },
+    { texts: ["complaint", "şikayet"], id: "complaints" },
+    { texts: ["return", "iade"], id: "returns" },
+    { texts: ["expense", "masraf", "gider", "payments"], id: "expenses" },
+    { texts: ["store", "profil", "mağaza"], id: "store" }
   ];
 
-  document.querySelectorAll("aside nav a").forEach(a => {
+  console.log("Setting up nav for role:", role);
+  const links = document.querySelectorAll("aside a");
+  
+  links.forEach(a => {
     const linkText = a.innerText.toLowerCase();
-    const match = navItems.find(item => linkText.includes(item.text));
+    const match = navItems.find(item => item.texts.some(t => linkText.includes(t)));
     
     if (match) {
       const targetId = match.id;
       a.setAttribute("data-nav", targetId);
-      a.href = "#";
+      a.href = "javascript:void(0)";
       
       // Staff kısıtlaması
       if (role === "staff" && targetId === "store") {
-        a.parentElement.style.display = "none"; 
+        a.style.display = "none";
+        if (a.parentElement && a.parentElement.tagName === "LI") a.parentElement.style.display = "none";
       }
 
       a.addEventListener("click", e => {
         e.preventDefault();
+        console.log("Navigating to:", targetId);
         showPage(targetId);
         
-        // Tüm sayfalardaki aktiflik durumunu güncelle
+        // Aktiflik durumunu güncelle
         document.querySelectorAll("[data-nav]").forEach(el => {
           el.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
           el.classList.add("text-on-surface-variant");
