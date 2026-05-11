@@ -5,6 +5,7 @@ import uvicorn
 import os
 from app.models import models
 from app.core.database import engine
+from app.api.endpoints.v1 import router as api_router
 
 # Veritabanı tablolarını oluştur (Bağlantı yoksa hata verme, devam et)
 try:
@@ -16,9 +17,12 @@ except Exception as e:
 
 app = FastAPI(
     title="AgentSync AI API",
-    description="Backend API for Multimodal KOBI Operations (WhatsApp & Web)",
+    description="KOBİ operasyonlarını otomatikleştiren çoklu ajan yapay zeka sistemi",
     version="1.0.0"
 )
+
+# API router'ı bağla
+app.include_router(api_router)
 
 # Static dosyaları serve et (Stitch SPA)
 _static_dir = os.path.join(os.path.dirname(__file__), "..", "app", "static")

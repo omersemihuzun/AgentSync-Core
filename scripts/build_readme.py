@@ -1,3 +1,7 @@
+# AgentSync AI — Eksiksiz README
+# Bu dosya yarışma gereksinimlerine göre hazırlanmıştır.
+
+readme = """
 <div align="center">
 
 # 🤖 AgentSync AI
@@ -186,3 +190,9 @@ AgentSync-Core/
 ## 📄 Lisans
 
 MIT License — YZTA 5.0 Hackathon projesi
+"""
+
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(readme.strip())
+
+print("README.md oluşturuldu!")
