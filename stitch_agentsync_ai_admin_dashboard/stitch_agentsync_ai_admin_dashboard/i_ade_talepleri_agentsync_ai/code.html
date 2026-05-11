@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgentSync AI - Returns</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#0e1416",
+                        "secondary": "#bbc6e2",
+                        "surface-container-high": "#252b2d",
+                        "on-secondary-fixed-variant": "#3c475d",
+                        "secondary-container": "#3e4960",
+                        "secondary-fixed": "#d7e2ff",
+                        "inverse-surface": "#dee3e6",
+                        "surface-container-low": "#171c1f",
+                        "on-primary": "#003642",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#eb8f3b",
+                        "on-primary-fixed-variant": "#004e5f",
+                        "on-tertiary-container": "#5d2f00",
+                        "surface-container-highest": "#303638",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "primary-fixed-dim": "#4cd6fb",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#bbc6e2",
+                        "tertiary-fixed": "#ffdcc3",
+                        "on-secondary-fixed": "#101b30",
+                        "primary-fixed": "#b3ebff",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#343a3c",
+                        "on-tertiary-fixed": "#2f1500",
+                        "on-primary-fixed": "#001f27",
+                        "on-surface-variant": "#bcc9ce",
+                        "primary": "#4cd6fb",
+                        "surface-tint": "#4cd6fb",
+                        "on-secondary": "#263046",
+                        "tertiary": "#ffb77d",
+                        "on-surface": "#dee3e6",
+                        "outline-variant": "#3d494d",
+                        "surface-container": "#1b2023",
+                        "surface-container-lowest": "#090f11",
+                        "inverse-on-surface": "#2b3134",
+                        "on-background": "#dee3e6",
+                        "surface-dim": "#0e1416",
+                        "on-tertiary": "#4d2600",
+                        "on-secondary-container": "#adb8d3",
+                        "on-error": "#690005",
+                        "outline": "#869398",
+                        "surface-variant": "#303638",
+                        "primary-container": "#00b4d8",
+                        "on-primary-container": "#00414f",
+                        "inverse-primary": "#00677d",
+                        "surface": "#0e1416",
+                        "tertiary-fixed-dim": "#ffb77d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "12px",
+                        "gutter": "16px",
+                        "stack-lg": "24px",
+                        "unit": "8px",
+                        "stack-sm": "4px",
+                        "container-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "mono-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Outfit"],
+                        "headline-md": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "mono-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden flex h-screen">
+<!-- SideNavBar -->
+<nav class="bg-surface-container/60 backdrop-blur-xl h-screen w-64 border-r border-outline-variant/10 shadow-lg shadow-primary/5 flex flex-col h-full py-6 px-4 hidden md:flex shrink-0">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AgentSync AI</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mission Control</p>
+</div>
+</div>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:scale-102 hover:bg-white/5 transition-all duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:scale-102 hover:bg-white/5 transition-all duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="font-body-md text-body-md">Complaints</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-primary-container bg-primary-container rounded-lg font-bold hover:scale-102 transition-all duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="assignment_return" data-weight="fill" style="font-variation-settings: 'FILL' 1;">assignment_return</span>
+<span class="font-body-md text-body-md">Returns</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:scale-102 hover:bg-white/5 transition-all duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Expenses</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:scale-102 hover:bg-white/5 transition-all duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-body-md text-body-md">Store Profile</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto">
+<button class="w-full py-2.5 px-4 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:scale-102 hover:shadow-[0_0_15px_rgba(76,214,251,0.4)] transition-all duration-300 ease-out">
+                Generate Report
+            </button>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-background/80 backdrop-blur-lg w-full h-16 sticky top-0 z-40 border-b border-outline-variant/10 flex justify-between items-center px-gutter shrink-0">
+<div class="flex items-center md:hidden">
+<span class="font-headline-sm text-headline-sm font-black text-primary">AgentSync AI</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-md ml-4">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-high border border-outline-variant/30 rounded-full py-2 pl-10 pr-4 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-on-surface-variant" placeholder="Search orders..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 ml-auto">
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer scale-102 active:scale-98 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer scale-102 active:scale-98 transition-transform">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30 ml-2">
+<img alt="Patron Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a person looking directly at the camera. The background is slightly blurred. The person is wearing a dark, formal shirt. The lighting is soft and studio-like, complementing a modern, tech-focused interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-6DZCIjIkvkVs6z9dn8ekGsL_2sU6IwCZJI_29Mzk5jDetvTd0goSgSynaqw2RkxcpeGy6ZlLdvJeYW5R7HHtAdHsHkpNwWU29xkkxDkQZvUnq2S7g0bKySgTnO1XhZhL1hhYQy17vNAfRiJNGSP7UuEIhx-2zHVIxyBIPN7HrphhvDVVAFrBB_Vb_1UKXzI5fJqaf8gW9Me78SuHVH5TUmz89FAwkEvBx7mj-lsSWqAeUKrScewCJmtRProrG93K07IKWwBKqKI"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-container-padding bg-gradient-to-b from-transparent to-surface-container-lowest/30">
+<div class="max-w-7xl mx-auto space-y-stack-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">İade Talepleri</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">AI analyzed return requests requiring review or action.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface-container-high border border-outline-variant/50 rounded-lg text-on-surface font-label-md text-label-md hover:border-primary/50 hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span> Filter
+                        </button>
+<button class="px-4 py-2 bg-surface-container-high border border-outline-variant/50 rounded-lg text-on-surface font-label-md text-label-md hover:border-primary/50 hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export
+                        </button>
+</div>
+</div>
+<!-- Data Table Component -->
+<div class="bg-[#1B263B]/60 backdrop-blur-[16px] rounded-xl border border-white/10 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/5 bg-surface-container-lowest/50">
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Order ID</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Müşteri Adı</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Reason</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">AI Kararı</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">AI Risk Skoru</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- Row 1 (High Risk) -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono-sm text-mono-sm text-on-surface">#ORD-992A</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface font-medium">Ahmet Yılmaz</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface-variant truncate max-w-[200px]">Item damaged upon arrival, box crushed.</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/20 border border-error/20">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-md text-label-md text-error">Reject</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[85%]"></div>
+</div>
+<span class="font-mono-sm text-mono-sm text-error">0.85</span>
+</div>
+</td>
+<td class="py-4 px-6 text-right space-x-2">
+<button class="px-3 py-1.5 bg-transparent border border-error text-error rounded-lg font-label-md text-label-md hover:bg-error/10 transition-colors">Reddet</button>
+<button class="px-3 py-1.5 bg-transparent border border-primary text-primary rounded-lg font-label-md text-label-md hover:bg-primary/10 transition-colors">Onayla</button>
+</td>
+</tr>
+<!-- Row 2 (Low Risk) -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono-sm text-mono-sm text-on-surface">#ORD-845B</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface font-medium">Ayşe Demir</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface-variant truncate max-w-[200px]">Wrong size received, ordered M got L.</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-md text-label-md text-primary">Approve</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[15%]"></div>
+</div>
+<span class="font-mono-sm text-mono-sm text-primary">0.15</span>
+</div>
+</td>
+<td class="py-4 px-6 text-right space-x-2">
+<button class="px-3 py-1.5 bg-transparent border border-error text-error rounded-lg font-label-md text-label-md hover:bg-error/10 transition-colors">Reddet</button>
+<button class="px-3 py-1.5 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:shadow-[0_0_10px_rgba(76,214,251,0.3)] transition-all">Onayla</button>
+</td>
+</tr>
+<!-- Row 3 (Medium Risk) -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono-sm text-mono-sm text-on-surface">#ORD-712C</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface font-medium">Mehmet Kaya</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface-variant truncate max-w-[200px]">Not as described in the pictures.</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/20">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-md text-label-md text-tertiary">Manual Review</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[55%]"></div>
+</div>
+<span class="font-mono-sm text-mono-sm text-tertiary">0.55</span>
+</div>
+</td>
+<td class="py-4 px-6 text-right space-x-2">
+<button class="px-3 py-1.5 bg-transparent border border-error text-error rounded-lg font-label-md text-label-md hover:bg-error/10 transition-colors">Reddet</button>
+<button class="px-3 py-1.5 bg-transparent border border-primary text-primary rounded-lg font-label-md text-label-md hover:bg-primary/10 transition-colors">Onayla</button>
+</td>
+</tr>
+<!-- Row 4 (Medium Risk) -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono-sm text-mono-sm text-on-surface">#ORD-554D</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface font-medium">Elif Şahin</td>
+<td class="py-4 px-6 font-body-sm text-body-sm text-on-surface-variant truncate max-w-[200px]">Changed my mind, no longer needed.</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/20">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-md text-label-md text-tertiary">Manual Review</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[45%]"></div>
+</div>
+<span class="font-mono-sm text-mono-sm text-tertiary">0.45</span>
+</div>
+</td>
+<td class="py-4 px-6 text-right space-x-2">
+<button class="px-3 py-1.5 bg-transparent border border-error text-error rounded-lg font-label-md text-label-md hover:bg-error/10 transition-colors">Reddet</button>
+<button class="px-3 py-1.5 bg-transparent border border-primary text-primary rounded-lg font-label-md text-label-md hover:bg-primary/10 transition-colors">Onayla</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-white/5 bg-surface-container-lowest/30 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing 1 to 4 of 24 entries</span>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-white/5 disabled:opacity-50"><span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span></button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-body-sm text-body-sm flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-white/5 font-body-sm text-body-sm">2</button>
+<button class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-white/5 font-body-sm text-body-sm">3</button>
+<button class="w-8 h-8 rounded border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-white/5"><span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

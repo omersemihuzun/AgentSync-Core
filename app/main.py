@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 import uvicorn
 import os
 from app.models import models
-from app.core.database import engine
+from app.core.database import engine, get_db
 from app.api.endpoints.v1 import router as api_router
 
 # Veritabanı tablolarını oluştur (Bağlantı yoksa hata verme, devam et)
@@ -39,7 +39,7 @@ def read_root():
 
 # WhatsApp Webhook - Gerçek zamanlı sipariş sorgulama simülasyonu
 @app.post("/webhook/whatsapp", tags=["WhatsApp Entegrasyonu"])
-async def whatsapp_webhook(request: Request, db: Session = Depends(api_router.dependencies[0].dependency if hasattr(api_router, 'dependencies') else get_db)):
+async def whatsapp_webhook(request: Request, db: Session = Depends(get_db)):
     """
     Twilio veya benzeri bir servisten gelen WhatsApp mesajlarını karşılar.
     Örnek: 'Siparişim nerede? ORD-2024-001'

@@ -3,8 +3,8 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 
-# Proje kök dizinini yola ekle ki app modülleri çalışsın (Temiz Mimari - No Spaghetti)
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# PYTHONPATH=/app docker-compose'da tanımlı; bu satır yerel çalıştırma için fallback
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from app.agents.crew import AgentSyncCrew
 
