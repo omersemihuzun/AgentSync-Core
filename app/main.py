@@ -6,8 +6,13 @@ import os
 from app.models import models
 from app.core.database import engine
 
-# Veritabanı tablolarını oluştur (Eğer yoksa)
-models.Base.metadata.create_all(bind=engine)
+# Veritabanı tablolarını oluştur (Bağlantı yoksa hata verme, devam et)
+try:
+    models.Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"[WARN] DB bağlantısı kurulamadı (okul ağı?): {e}")
+    print("[INFO] API static dosyaları serve etmeye devam edecek.")
+
 
 app = FastAPI(
     title="AgentSync AI API",
