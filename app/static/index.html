@@ -1830,29 +1830,45 @@ window.addEventListener("DOMContentLoaded", () => {
   // Çevirileri uygula
   applyTranslations();
 
-  // Login formu
-  document.querySelectorAll("form").forEach(form => {
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const email = (form.querySelector("#email") || {}).value || "";
-      const pass  = (form.querySelector("#password") || {}).value || "";
-      const user  = MOCK_USERS[email.trim()];
-      if (user && user.pass === pass) {
-        sessionStorage.setItem("agentsync_user", JSON.stringify({email, role: user.role}));
-        setupNav(user.role);
-        setupButtons();
-        showPage("dashboard");
-      } else {
-        const errBox = form.querySelector(".error-msg");
-        if (errBox) {
-          errBox.style.display = "flex";
-          errBox.innerText = "Hatalı e-posta veya şifre!";
-        } else {
-          showToast("Hatalı e-posta veya şifre!", "error");
-        }
+  // ── Login sayfası: sadece #page-login içindeki formu dinle ──
+  function doLogin() {
+    const emailEl = document.getElementById("email");
+    const passEl  = document.getElementById("password");
+    const email   = emailEl ? emailEl.value.trim() : "";
+    const pass    = passEl  ? passEl.value          : "";
+    const user    = MOCK_USERS[email];
+    if (user && user.pass === pass) {
+      sessionStorage.setItem("agentsync_user", JSON.stringify({email, role: user.role}));
+      setupNav(user.role);
+      setupButtons();
+      showPage("dashboard");
+    } else {
+      showToast("Hatalı e-posta veya şifre!", "error");
+      if (emailEl) { emailEl.style.border = "1px solid #ffb4ab"; setTimeout(() => emailEl.style.border = "", 2000); }
+      if (passEl)  { passEl.style.border  = "1px solid #ffb4ab"; setTimeout(() => passEl.style.border  = "", 2000); }
+    }
+  }
+
+  const loginPage = document.getElementById("page-login");
+  if (loginPage) {
+    const loginForm = loginPage.querySelector("form");
+    if (loginForm) loginForm.addEventListener("submit", e => { e.preventDefault(); doLogin(); });
+
+    // Giriş Yap butonuna direkt click desteği (type="submit" bazen SPA'da tetiklenmeyebilir)
+    loginPage.querySelectorAll("button[type='submit'], button").forEach(btn => {
+      if (btn.innerText.includes("Giriş") || btn.innerText.includes("Login")) {
+        btn.addEventListener("click", e => { e.preventDefault(); doLogin(); });
       }
     });
-  });
+
+    // Demo ipucu ekle
+    if (loginForm) {
+      const hint = document.createElement("div");
+      hint.style.cssText = "margin-top:14px;padding:12px 16px;border-radius:10px;background:rgba(76,214,251,0.06);border:1px solid rgba(76,214,251,0.15);font-size:12px;color:#bcc9ce;font-family:JetBrains Mono,monospace;line-height:1.8";
+      hint.innerHTML = "🔑 <b style='color:#4cd6fb'>Demo Giriş</b><br>Patron: patron@agentsync.com / patron123<br>Çalışan: calisan@agentsync.com / calisan123";
+      loginForm.appendChild(hint);
+    }
+  }
 
   // Oturum varsa direkt yükle
   const saved = sessionStorage.getItem("agentsync_user");
