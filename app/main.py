@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
+from sqlalchemy.orm import Session
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import uvicorn
@@ -36,14 +37,37 @@ def read_root():
         return FileResponse(index)
     return {"status": "ok", "message": "AgentSync AI Backend is running."}
 
-# Placeholder for Twilio Webhook
-@app.post("/webhook/whatsapp")
-async def whatsapp_webhook(request: Request):
-    # This endpoint will receive messages from WhatsApp via Twilio
-    # It will extract text/audio/images and pass them to CrewAI agents
-    form_data = await request.form()
-    # TODO: Process the incoming message
-    return {"status": "received"}
+# WhatsApp Webhook - Gerçek zamanlı sipariş sorgulama simülasyonu
+@app.post("/webhook/whatsapp", tags=["WhatsApp Entegrasyonu"])
+async def whatsapp_webhook(request: Request, db: Session = Depends(api_router.dependencies[0].dependency if hasattr(api_router, 'dependencies') else get_db)):
+    """
+    Twilio veya benzeri bir servisten gelen WhatsApp mesajlarını karşılar.
+    Örnek: 'Siparişim nerede? ORD-2024-001'
+    """
+    try:
+        form_data = await request.form()
+        incoming_msg = form_data.get("Body", "").strip()
+        from_number = form_data.get("From", "")
+        
+        # Basit Regex/NLP Simülasyonu: Sipariş kodu ayıklama
+        import re
+        order_match = re.search(r"ORD-\d{4}-\d{3}", incoming_msg.upper())
+        
+        if order_match:
+            order_code = order_match.group(0)
+            order = db.query(models.Order).filter(models.Order.order_code == order_code).first()
+            
+            if order:
+                response_msg = f"Merhaba! {order_code} nolu siparişinizin durumu: *{order.status}*.\n"
+                if order.cargo_tracking_code:
+                    response_msg += f"Kargo: {order.cargo_company} - Takip No: {order.cargo_tracking_code}"
+                return {"message": response_msg}
+            else:
+                return {"message": f"Üzgünüm, {order_code} kodlu bir sipariş bulamadım."}
+        
+        return {"message": "Merhaba! Sipariş durumunuzu öğrenmek için 'Siparişim nerede? ORD-XXXX-XXX' şeklinde yazabilirsiniz."}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

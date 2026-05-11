@@ -1,5 +1,7 @@
 <div align="center">
 
+![AgentSync AI Banner](app/static/assets/banner.png)
+
 # 🤖 AgentSync AI
 ### *AI ile Güçlendirilmiş KOBİ Operasyon Platformu*
 
