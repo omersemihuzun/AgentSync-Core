@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 import uvicorn
-import models
-from database import engine
+from app.models import models
+from app.core.database import engine
 
 # Veritabanı tablolarını oluştur (Eğer yoksa)
 models.Base.metadata.create_all(bind=engine)

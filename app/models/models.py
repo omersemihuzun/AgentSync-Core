@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Boolean
 from sqlalchemy.sql import func
-from database import Base
+from app.core.database import Base
 
 class Complaint(Base):
     __tablename__ = "complaints"
