@@ -1542,9 +1542,17 @@ const MOCK_USERS = {
 };
 
 function showPage(id) {
+  console.log("Showing page:", id);
   document.querySelectorAll("[id^=page-]").forEach(el => el.style.display = "none");
   const el = document.getElementById("page-" + id);
-  if (el) { el.style.display = "flex"; }
+  if (el) { 
+    el.style.display = "flex";
+    // Grafiklerin (chart) doğru render edilmesi için resize tetikle
+    window.dispatchEvent(new Event('resize'));
+  }
+  if (location.hash !== "#" + id) {
+    location.hash = id;
+  }
 }
 
 function setupNav(role) {
@@ -1557,18 +1565,15 @@ function setupNav(role) {
   ];
 
   console.log("Setting up nav for role:", role);
-  const links = document.querySelectorAll("aside a");
-  
-  links.forEach(a => {
+  document.querySelectorAll("aside a").forEach(a => {
     const linkText = a.innerText.toLowerCase();
     const match = navItems.find(item => item.texts.some(t => linkText.includes(t)));
     
     if (match) {
       const targetId = match.id;
       a.setAttribute("data-nav", targetId);
-      a.href = "javascript:void(0)";
+      a.style.cursor = "pointer";
       
-      // Staff kısıtlaması
       if (role === "staff" && targetId === "store") {
         a.style.display = "none";
         if (a.parentElement && a.parentElement.tagName === "LI") a.parentElement.style.display = "none";
@@ -1576,10 +1581,8 @@ function setupNav(role) {
 
       a.addEventListener("click", e => {
         e.preventDefault();
-        console.log("Navigating to:", targetId);
         showPage(targetId);
         
-        // Aktiflik durumunu güncelle
         document.querySelectorAll("[data-nav]").forEach(el => {
           el.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
           el.classList.add("text-on-surface-variant");
@@ -1593,8 +1596,15 @@ function setupNav(role) {
   });
 }
 
+window.addEventListener("hashchange", () => {
+  const id = location.hash.replace("#", "");
+  if (id && document.getElementById("page-" + id)) {
+    const saved = sessionStorage.getItem("agentsync_user");
+    if (saved) showPage(id);
+  }
+});
+
 window.addEventListener("DOMContentLoaded", () => {
-  // Login form submit
   document.querySelectorAll("form").forEach(form => {
     form.addEventListener("submit", e => {
       e.preventDefault();
@@ -1611,12 +1621,12 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Auto-login if session exists
   const saved = sessionStorage.getItem("agentsync_user");
   if (saved) {
     const u = JSON.parse(saved);
     setupNav(u.role);
-    showPage("dashboard");
+    const initialHash = location.hash.replace("#", "");
+    showPage(initialHash && document.getElementById("page-" + initialHash) ? initialHash : "dashboard");
   } else {
     showPage("login");
   }
