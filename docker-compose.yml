@@ -8,9 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-    environment:
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+    env_file:
+      - .env
     restart: always
 
   # İleride eklenecek olan Frontend (Streamlit) servisi için taslak:
