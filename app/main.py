@@ -1,5 +1,8 @@
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import uvicorn
+import os
 from app.models import models
 from app.core.database import engine
 
@@ -12,8 +15,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Static dosyaları serve et (Stitch SPA)
+_static_dir = os.path.join(os.path.dirname(__file__), "..", "app", "static")
+if os.path.isdir(_static_dir):
+    app.mount("/static", StaticFiles(directory=_static_dir), name="static")
+
 @app.get("/")
 def read_root():
+    index = os.path.join(_static_dir, "index.html")
+    if os.path.isfile(index):
+        return FileResponse(index)
     return {"status": "ok", "message": "AgentSync AI Backend is running."}
 
 # Placeholder for Twilio Webhook
