@@ -1,4 +1,4 @@
-import os, re
+import os, re, json
 
 base = r'stitch_agentsync_ai_admin_dashboard\stitch_agentsync_ai_admin_dashboard'
 pages = {
@@ -118,7 +118,7 @@ const MOCK_USERS = {
 // ──────────────────────────────────────────────────────────────────
 // Türkçe çeviriler
 // ──────────────────────────────────────────────────────────────────
-const TR_MAP = """ + str([[a, b] for a, b in tr_map]).replace("'", '"') + """;
+const TR_MAP = """ + json.dumps([[a, b] for a, b in tr_map], ensure_ascii=False) + """;
 
 function applyTranslations() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
