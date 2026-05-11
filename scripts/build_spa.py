@@ -33,29 +33,47 @@ const MOCK_USERS = {
 function showPage(id) {
   document.querySelectorAll("[id^=page-]").forEach(el => el.style.display = "none");
   const el = document.getElementById("page-" + id);
-  if (el) { el.style.display = ""; }
+  if (el) { el.style.display = "flex"; }
 }
 
 function setupNav(role) {
-  const navMap = ["dashboard","complaints","returns","expenses","store"];
-  document.querySelectorAll("aside nav a").forEach((a, i) => {
-    if (!navMap[i]) return;
-    a.setAttribute("data-nav", navMap[i]);
-    a.href = "#";
-    // Hide store for staff
-    if (role === "staff" && navMap[i] === "store") {
-      a.style.display = "none";
-    }
-    a.addEventListener("click", e => {
-      e.preventDefault();
-      showPage(navMap[i]);
-      document.querySelectorAll("[data-nav]").forEach(x => {
-        x.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
-        x.classList.add("text-on-surface-variant");
+  const navItems = [
+    { text: "dashboard",  id: "dashboard" },
+    { text: "complaints", id: "complaints" },
+    { text: "returns",    id: "returns" },
+    { text: "expenses",   id: "expenses" },
+    { text: "store",      id: "store" }
+  ];
+
+  document.querySelectorAll("aside nav a").forEach(a => {
+    const linkText = a.innerText.toLowerCase();
+    const match = navItems.find(item => linkText.includes(item.text));
+    
+    if (match) {
+      const targetId = match.id;
+      a.setAttribute("data-nav", targetId);
+      a.href = "#";
+      
+      // Staff kısıtlaması
+      if (role === "staff" && targetId === "store") {
+        a.parentElement.style.display = "none"; 
+      }
+
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        showPage(targetId);
+        
+        // Tüm sayfalardaki aktiflik durumunu güncelle
+        document.querySelectorAll("[data-nav]").forEach(el => {
+          el.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
+          el.classList.add("text-on-surface-variant");
+        });
+        document.querySelectorAll("[data-nav='" + targetId + "']").forEach(el => {
+          el.classList.add("text-on-primary-container","bg-primary-container","font-bold");
+          el.classList.remove("text-on-surface-variant");
+        });
       });
-      a.classList.add("text-on-primary-container","bg-primary-container","font-bold");
-      a.classList.remove("text-on-surface-variant");
-    });
+    }
   });
 }
 
@@ -92,8 +110,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 parts = []
 for key in ['login','dashboard','complaints','returns','expenses','store']:
-    display = '' if key == 'login' else ' style="display:none"'
-    parts.append(f'<div id="page-{key}"{display}>\n{bodies[key]}\n</div>')
+    display = 'flex' if key == 'login' else 'none'
+    # Login haricindekiler yan yana sidebar düzeni için flex olmalı
+    cls = "w-full h-screen" + (" flex" if key != "login" else "")
+    parts.append(f'<div id="page-{key}" class="{cls}" style="display:{display}">\n{bodies[key]}\n</div>')
 
 html_out = f"""<!DOCTYPE html>
 <html class="dark" lang="tr">

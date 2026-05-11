@@ -140,7 +140,7 @@
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased">
-<div id="page-login">
+<div id="page-login" class="w-full h-screen" style="display:flex">
 <!-- Background Decoration -->
 <div class="absolute inset-0 z-0">
 <div class="absolute inset-0 cyber-grid"></div>
@@ -204,7 +204,7 @@
 </div>
 </div>
 </div>
-</div><div id="page-dashboard" style="display:none">
+</div><div id="page-dashboard" class="w-full h-screen flex" style="display:none">
 <!-- SideNavBar Component -->
 <aside class="h-screen w-64 border-r border-outline-variant/10 flex flex-col h-full py-6 px-4 bg-surface-container/60 backdrop-blur-xl shadow-lg shadow-primary/5 hidden md:flex z-50">
 <div class="flex items-center gap-stack-md px-2 mb-8">
@@ -486,7 +486,7 @@
 <div class="h-8"></div>
 </div>
 </main>
-</div><div id="page-complaints" style="display:none">
+</div><div id="page-complaints" class="w-full h-screen flex" style="display:none">
 <aside class="h-screen w-64 border-r border-outline-variant/10 bg-surface-container/60 backdrop-blur-xl flex flex-col py-6 px-4 shadow-lg shadow-primary/5 shrink-0 hidden md:flex transition-all ease-out duration-300 z-50">
 <div class="mb-stack-lg px-2">
 <div class="flex items-center gap-3 mb-1">
@@ -733,7 +733,7 @@
 </div>
 </main>
 </div>
-</div><div id="page-returns" style="display:none">
+</div><div id="page-returns" class="w-full h-screen flex" style="display:none">
 <!-- SideNavBar -->
 <nav class="bg-surface-container/60 backdrop-blur-xl h-screen w-64 border-r border-outline-variant/10 shadow-lg shadow-primary/5 flex flex-col h-full py-6 px-4 hidden md:flex shrink-0">
 <div class="mb-8 px-2 flex items-center gap-3">
@@ -955,7 +955,7 @@
 </div>
 </main>
 </div>
-</div><div id="page-expenses" style="display:none">
+</div><div id="page-expenses" class="w-full h-screen flex" style="display:none">
 <!-- SideNavBar (Shared Component) -->
 <nav class="hidden md:flex h-screen w-64 border-r border-outline-variant/10 bg-surface-container/60 backdrop-blur-xl shadow-lg shadow-primary/5 flex-col py-6 px-4 shrink-0 z-50">
 <!-- Header -->
@@ -1272,7 +1272,7 @@
 </div>
 </main>
 </div>
-</div><div id="page-store" style="display:none">
+</div><div id="page-store" class="w-full h-screen flex" style="display:none">
 <!-- SideNavBar (Shared Component) -->
 <nav class="hidden md:flex flex-col h-screen w-64 border-r border-outline-variant/10 bg-surface-container/60 backdrop-blur-xl shadow-lg shadow-primary/5">
 <div class="flex flex-col h-full py-6 px-4">
@@ -1544,29 +1544,47 @@ const MOCK_USERS = {
 function showPage(id) {
   document.querySelectorAll("[id^=page-]").forEach(el => el.style.display = "none");
   const el = document.getElementById("page-" + id);
-  if (el) { el.style.display = ""; }
+  if (el) { el.style.display = "flex"; }
 }
 
 function setupNav(role) {
-  const navMap = ["dashboard","complaints","returns","expenses","store"];
-  document.querySelectorAll("aside nav a").forEach((a, i) => {
-    if (!navMap[i]) return;
-    a.setAttribute("data-nav", navMap[i]);
-    a.href = "#";
-    // Hide store for staff
-    if (role === "staff" && navMap[i] === "store") {
-      a.style.display = "none";
-    }
-    a.addEventListener("click", e => {
-      e.preventDefault();
-      showPage(navMap[i]);
-      document.querySelectorAll("[data-nav]").forEach(x => {
-        x.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
-        x.classList.add("text-on-surface-variant");
+  const navItems = [
+    { text: "dashboard",  id: "dashboard" },
+    { text: "complaints", id: "complaints" },
+    { text: "returns",    id: "returns" },
+    { text: "expenses",   id: "expenses" },
+    { text: "store",      id: "store" }
+  ];
+
+  document.querySelectorAll("aside nav a").forEach(a => {
+    const linkText = a.innerText.toLowerCase();
+    const match = navItems.find(item => linkText.includes(item.text));
+    
+    if (match) {
+      const targetId = match.id;
+      a.setAttribute("data-nav", targetId);
+      a.href = "#";
+      
+      // Staff kısıtlaması
+      if (role === "staff" && targetId === "store") {
+        a.parentElement.style.display = "none"; 
+      }
+
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        showPage(targetId);
+        
+        // Tüm sayfalardaki aktiflik durumunu güncelle
+        document.querySelectorAll("[data-nav]").forEach(el => {
+          el.classList.remove("text-on-primary-container","bg-primary-container","font-bold");
+          el.classList.add("text-on-surface-variant");
+        });
+        document.querySelectorAll("[data-nav='" + targetId + "']").forEach(el => {
+          el.classList.add("text-on-primary-container","bg-primary-container","font-bold");
+          el.classList.remove("text-on-surface-variant");
+        });
       });
-      a.classList.add("text-on-primary-container","bg-primary-container","font-bold");
-      a.classList.remove("text-on-surface-variant");
-    });
+    }
   });
 }
 
