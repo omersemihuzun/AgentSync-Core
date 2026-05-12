@@ -1,17 +1,18 @@
-# AgentSync AI (FastAPI Backend) Dockerfile
 FROM python:3.10-slim
 
 WORKDIR /app
 
-# Gerekli bağımlılıkları kopyala ve yükle
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
-# Uygulama kodlarını kopyala
+RUN pip install --upgrade pip setuptools wheel
+
+COPY requirements.txt .
+RUN grep -v "openai-whisper" requirements.txt > requirements_clean.txt
+RUN pip install --no-cache-dir -r requirements_clean.txt
+RUN pip install git+https://github.com/openai/whisper.git
+
 COPY . .
 
-# FastAPI'nin çalışacağı port
 EXPOSE 8000
 
-# Uygulamayı başlat
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
