@@ -230,12 +230,16 @@ AgentSync-Core/
 
 ---
 
-## Takım
+## Takım (yapanlar)
 
-| İsim | Rol |
-|------|-----|
-| Ömer Semih Uzun | Backend & AI ajanlar |
-| Dilara | Frontend & entegrasyon |
+| İsim soyisim | Rol / katkı |
+|--------------|-------------|
+| **Ömer Semih UZUN** | Backend, AI ajanlar (CrewAI / Gemini), API, dokümantasyon |
+| **Dilara Şenay** | Grup yönetimi, frontend & entegrasyon (WhatsApp / panel) |
+| **Ahmet Yasir Duman** | WhatsApp webhook, mesaj parse, müşteri ajanı entegrasyonu |
+| **Hayrunnisa Önel** | Proje geliştirme ve operasyon katkıları |
+
+*(İletişim bilgileri public repoda paylaşılmaz.)*
 
 ---
 
