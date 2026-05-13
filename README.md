@@ -9,7 +9,7 @@
 [![Gemini](https://img.shields.io/badge/Google-Gemini_1.5_Flash-red?logo=google)](https://ai.google.dev)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://docker.com)
 
-**YZTA 5.0 Hackathon — Takım AgentSync**
+**YZTA 5.0 Hackathon — AgentSync AI**
 
 </div>
 
@@ -229,15 +229,6 @@ AgentSync-Core/
 
 - **`.env` dosyasını Git’e eklemeyin.** API anahtarları ve veritabanı parolası sızarsa hemen **Neon + Gemini + Twilio** anahtarlarını yenileyin.
 - Jüriye yalnızca **örnek** `.env` satırlarını (değersiz) gösterin.
-
----
-
-## Takım (yapanlar)
-
-- **Ömer Semih UZUN**
-- **Dilara Şenay**
-- **Ahmet Yasir Duman**
-- **Hayrunnisa Önel**
 
 ---
 
