@@ -1401,7 +1401,7 @@
 <div class="absolute left-3 top-2.5 flex items-center gap-1 border-r border-outline-variant/30 pr-2">
 <span class="text-on-surface-variant font-mono-sm">+90</span>
 </div>
-<input class="w-full bg-surface-container-lowest border border-outline-variant/30 text-on-surface font-mono-sm text-mono-sm rounded-lg py-2.5 pl-16 pr-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all" type="tel" value="545 829 48 10"/>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/30 text-on-surface font-mono-sm text-mono-sm rounded-lg py-2.5 pl-16 pr-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all" type="tel" value="555 111 22 33"/>
 </div>
 <p class="font-body-sm text-[12px] text-on-surface-variant/70 ml-1 mt-1">Bu numara, müşteri bildirimleri ve yapay zeka entegrasyonu için kullanılacaktır.</p>
 </div>
@@ -1541,7 +1541,7 @@ const MOCK_USERS = {
 function displayCustomerName(name) {
   if (!name) return "Müşteri";
   const n = String(name);
-  if (n.toLowerCase() === "whatsapp:+905458294810") return "Butik Hattı (+90 545 829 48 10)";
+  if (n.toLowerCase() === "whatsapp:+905551112233") return "Butik Hattı (+90 555 111 22 33)";
   if (n.toLowerCase().startsWith("whatsapp:+90")) return "WhatsApp " + n.slice(-12);
   if (n.toLowerCase().startsWith("whatsapp:")) return "WhatsApp " + n.replace("whatsapp:", "").slice(0, 16);
   return n;
@@ -1936,7 +1936,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (loginForm) {
       const hint = document.createElement("div");
       hint.style.cssText = "margin-top:14px;padding:12px 16px;border-radius:10px;background:rgba(76,214,251,0.06);border:1px solid rgba(76,214,251,0.15);font-size:12px;color:#bcc9ce;font-family:JetBrains Mono,monospace;line-height:1.8";
-      hint.innerHTML = "🔑 <b style='color:#4cd6fb'>Demo Giriş</b><br>Patron: patron@agentsync.com / patron123<br>Çalışan: calisan@agentsync.com / calisan123<br><br>📱 <b>WhatsApp iş hattı (demo):</b> +90 545 829 48 10 — şikayet kaydı için <code style='color:#dee3e6'>python scripts/generate_mock_data.py</code> çalıştırın.";
+      hint.innerHTML = "🔑 <b style='color:#4cd6fb'>Demo Giriş</b><br>Patron: patron@agentsync.com / patron123<br>Çalışan: calisan@agentsync.com / calisan123<br><br>📱 <b>İş hattı:</b> Gerçek numarayı <code>.env</code> içinde <code>BOUTIQUE_WHATSAPP_*</code> ile verin. Mock veri: <code>python scripts/generate_mock_data.py</code>";
       loginForm.appendChild(hint);
     }
   }

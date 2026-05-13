@@ -103,6 +103,8 @@ pip install -r requirements.txt
 | `DATABASE_URL` | Önerilir | Neon PostgreSQL veya `sqlite:///./agentsync.sqlite3` |
 | `GEMINI_API_KEY` | İsteğe bağlı | CrewAI + Gemini; yoksa demo yedek mantık devreye girebilir |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM` | İsteğe bağlı | Giden WhatsApp (onay sonrası bildirim) |
+| `BOUTIQUE_WHATSAPP_E164` | İsteğe bağlı | Örn. `whatsapp:+90XXXXXXXXXX` — mock şikayet ve demo; yoksa kodda demo numara |
+| `BOUTIQUE_WHATSAPP_DISPLAY` | İsteğe bağlı | Panelde görünen format, örn. `+90 XXX XXX XX XX` |
 | `AGENTSYNC_DEMO_CHAIN` | İsteğe bağlı | `1` ise webhook’ta iade sonrası otomatik AI pipeline |
 | `AGENTSYNC_DEMO_AUTO_APPROVE` | İsteğe bağlı | `1` ise Approve + düşük riskte otomatik onay |
 | `AGENTSYNC_DEMO_FALLBACK_AI` | İsteğe bağlı | `1` (varsayılan) Crew hata verirse yedek karar |
@@ -232,14 +234,10 @@ AgentSync-Core/
 
 ## Takım (yapanlar)
 
-| İsim soyisim | Rol / katkı |
-|--------------|-------------|
-| **Ömer Semih UZUN** | Backend, AI ajanlar (CrewAI / Gemini), API, dokümantasyon |
-| **Dilara Şenay** | Grup yönetimi, frontend & entegrasyon (WhatsApp / panel) |
-| **Ahmet Yasir Duman** | WhatsApp webhook, mesaj parse, müşteri ajanı entegrasyonu |
-| **Hayrunnisa Önel** | Proje geliştirme ve operasyon katkıları |
-
-*(İletişim bilgileri public repoda paylaşılmaz.)*
+- **Ömer Semih UZUN**
+- **Dilara Şenay**
+- **Ahmet Yasir Duman**
+- **Hayrunnisa Önel**
 
 ---
 

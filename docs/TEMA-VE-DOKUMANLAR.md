@@ -12,7 +12,7 @@ PDF içeriği: renk / tipografi / bileşen kuralları SPA’ya uygulanırken ref
 
 ## Kodda sabit marka
 
-- `app/core/brand_config.py` — butik adı, WhatsApp E.164 (`whatsapp:+905458294810`), görünen numara.
+- `app/core/brand_config.py` — butik adı; WhatsApp adresi **`.env`** ile (`BOUTIQUE_WHATSAPP_E164`, `BOUTIQUE_WHATSAPP_DISPLAY`). Repoda sabit gerçek numara yoktur.
 
 ## README
 

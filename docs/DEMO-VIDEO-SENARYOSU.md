@@ -1,6 +1,6 @@
 # Demo video senaryosu (WhatsApp → sistem → AI → onay)
 
-Bu akış **Linen Atölye Butik** ve iş hattı **`+90 545 829 48 10`** (`whatsapp:+905458294810`) ile anlatılır.
+Bu akış **Linen Atölye Butik** ve **demo WhatsApp hattı** (`.env` ile `BOUTIQUE_WHATSAPP_*` tanımlanır; aksi halde varsayılan demo numara kullanılır) ile anlatılır.
 
 ## Ön koşullar
 
@@ -31,7 +31,7 @@ Bu akış **Linen Atölye Butik** ve iş hattı **`+90 545 829 48 10`** (`whatsa
 ```powershell
 curl.exe -s -X POST "http://127.0.0.1:8000/webhook/whatsapp?format=json" ^
   -F "Body=Merhaba, elbise rengi siteden farkli geldi, iade istiyorum" ^
-  -F "From=whatsapp:+905458294810"
+  -F "From=whatsapp:+905551112233"
 ```
 
 Beklenen (demo zinciri açıkken): JSON içinde `return_item_id`, `ai_pipeline` (`verdict`, `risk_score`), isteğe bağlı `demo_auto_approve`.
@@ -41,7 +41,7 @@ Beklenen (demo zinciri açıkken): JSON içinde `return_item_id`, `ai_pipeline` 
 ```powershell
 curl.exe -s -X POST "http://127.0.0.1:8000/webhook/whatsapp?format=json" ^
   -F "Body=sikayet: kargo gecikti" ^
-  -F "From=whatsapp:+905458294810"
+  -F "From=whatsapp:+905551112233"
 ```
 
 ## Jüriye tek cümle
