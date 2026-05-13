@@ -13,7 +13,7 @@ readme = """
 [![Gemini](https://img.shields.io/badge/Google-Gemini_1.5_Flash-red?logo=google)](https://ai.google.dev)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://docker.com)
 
-**YZTA 5.0 Hackathon — Takım AgentSync**
+**YZTA 5.0 Hackathon — AgentSync AI**
 
 </div>
 
@@ -106,7 +106,7 @@ cd AgentSync-Core
 
 ### 2. .env Dosyasını Oluştur
 ```env
-DATABASE_URL=postgresql://...   # Ekip liderinden al
+DATABASE_URL=postgresql://...   # Neon veya sqlite:///./agentsync.sqlite3
 GEMINI_API_KEY=...              # Google AI Studio'dan al
 TWILIO_AUTH_TOKEN=...           # Opsiyonel
 ```
@@ -175,15 +175,6 @@ AgentSync-Core/
 ├── docker-compose.yml
 └── requirements.txt
 ```
-
----
-
-## 👥 Takım
-
-| İsim | Rol |
-|------|-----|
-| Ömer Semih Uzun | Backend & AI Ajanlar |
-| *(ekip arkadaşı)* | ....|
 
 ---
 
