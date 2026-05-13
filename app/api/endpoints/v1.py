@@ -3,6 +3,7 @@ AgentSync AI — REST API Endpoint'leri
 Tüm tablolar için GET/POST/PATCH desteği.
 """
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.core.database import SessionLocal
@@ -27,7 +28,7 @@ def list_complaints(status: Optional[str] = None, db: Session = Depends(get_db))
     q = db.query(Complaint)
     if status:
         q = q.filter(Complaint.status == status)
-    return q.order_by(Complaint.created_at.desc()).all()
+    return jsonable_encoder(q.order_by(Complaint.created_at.desc()).all())
 
 
 @router.patch("/complaints/{complaint_id}/status", tags=["Şikayetler"])
@@ -48,48 +49,25 @@ def update_complaint_status(complaint_id: int, status: str, assigned_to: Optiona
 @router.get("/return-items", tags=["İade Talepleri"])
 def list_returns(db: Session = Depends(get_db)):
     """Tüm iade taleplerini AI kararıyla birlikte listeler."""
-    return db.query(ReturnItem).order_by(ReturnItem.created_at.desc()).all()
+    return jsonable_encoder(db.query(ReturnItem).order_by(ReturnItem.created_at.desc()).all())
 
 
 @router.post("/return-items/{return_id}/ai-analyze", tags=["İade Talepleri"])
 def ai_analyze_return(return_id: int, db: Session = Depends(get_db)):
     """Belirli bir iade talebini CrewAI ajanlarıyla analiz eder ve sonucu DB'ye yazar."""
-    item = db.query(ReturnItem).filter(ReturnItem.id == return_id).first()
-    if not item:
-        raise HTTPException(status_code=404, detail="İade talebi bulunamadı")
+    from app.services.return_pipeline import analyze_return_item_db
 
-    try:
-        from app.agents.crew import AgentSyncCrew
-        crew = AgentSyncCrew(
-            customer_name=item.customer_name,
-            image_description=item.reason
-        )
-        result = crew.run()
-        result_str = str(result)
-
-        # AI çıktısından verdict çıkar
-        verdict = "Manual Review"
-        score = 0.5
-        if "APPROVE" in result_str.upper():
-            verdict, score = "Approve", 0.1
-        elif "REJECT" in result_str.upper():
-            verdict, score = "Reject", 0.85
-        elif "MANUAL" in result_str.upper():
-            verdict, score = "Manual Review", 0.6
-
-        item.ai_verdict = verdict
-        item.ai_risk_score = score
-        item.ai_reasoning = result_str[:1000]  # İlk 1000 karakter
-        db.commit()
-
-        return {"success": True, "verdict": verdict, "risk_score": score, "reasoning": result_str}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI analiz hatası: {str(e)}")
+    out = analyze_return_item_db(db, return_id, allow_fallback=True)
+    if not out.get("success"):
+        raise HTTPException(status_code=404, detail=out.get("error", "Bulunamadı"))
+    return out
 
 
 @router.patch("/return-items/{return_id}/decision", tags=["İade Talepleri"])
 def human_decision(return_id: int, status: str, db: Session = Depends(get_db)):
     """Patron manuel olarak iade kararını onaylar/reddeder (Human-in-the-Loop)."""
+    from app.services.twilio_notify import send_whatsapp
+
     item = db.query(ReturnItem).filter(ReturnItem.id == return_id).first()
     if not item:
         raise HTTPException(status_code=404, detail="İade talebi bulunamadı")
@@ -97,7 +75,21 @@ def human_decision(return_id: int, status: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Geçersiz durum. 'Approved' veya 'Rejected' olmalı.")
     item.status = status
     db.commit()
-    return {"success": True, "id": return_id, "final_status": status}
+
+    whatsapp_notify = None
+    to_addr = (item.customer_name or "").strip()
+    if to_addr and ("whatsapp:" in to_addr.lower() or to_addr.startswith("+")):
+        if status == "Approved":
+            body = "Merhaba, iade talebiniz onaylandi. Kargo/geri odeme adimlari icin kisa surede bilgilendirileceksiniz."
+        else:
+            body = "Merhaba, iade talebiniz uygun gorulmedi. Detay icin musteri hizmetlerimizle iletisime gecebilirsiniz."
+        ok, detail = send_whatsapp(to_addr, body)
+        whatsapp_notify = {"attempted": True, "sent": ok, "detail": detail}
+
+    out = {"success": True, "id": return_id, "final_status": status}
+    if whatsapp_notify is not None:
+        out["whatsapp_notify"] = whatsapp_notify
+    return out
 
 
 # ── Ürünler & Stok ──────────────────────────────────────────────────────────

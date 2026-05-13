@@ -183,7 +183,7 @@ AgentSync-Core/
 | İsim | Rol |
 |------|-----|
 | Ömer Semih Uzun | Backend & AI Ajanlar |
-| Dilara *(ekip arkadaşı)* | Frontend & Entegrasyon |
+| *(ekip arkadaşı)* | ....|
 
 ---
 

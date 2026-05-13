@@ -16,6 +16,5 @@ venv.bak/
 *.sqlite3
 *.db
 
-# Project specific
-docs/
+# Project specific (buyuk PDF'leri repoya zorunlu tutma; isterseniz docs/*.pdf ekleyin)
 *.pdf
