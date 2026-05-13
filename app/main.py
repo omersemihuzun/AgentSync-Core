@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request
 import uvicorn
-
+from fastapi import Response
+from twilio.twiml.messaging_response import MessagingResponse
 from app.models import models
 from app.core.database import engine
 from app.agents.customer_agent import run_agent
+from app.api.scheduler import router as scheduler_router 
 
 # Veritabanı tablolarını oluştur (Eğer yoksa)
 models.Base.metadata.create_all(bind=engine)
@@ -14,6 +16,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.include_router(scheduler_router)
+
 @app.get("/")
 def read_root():
     return {
@@ -23,39 +27,29 @@ def read_root():
 
 @app.post("/webhook/whatsapp")
 async def whatsapp_webhook(request: Request):
-
     # Twilio form verisini al
     form_data = await request.form()
+    
+    # Mesaj ve gönderen bilgileri
+    incoming_msg = form_data.get('Body', '')
+    sender = form_data.get('From', '')
+    
+    # Medya (Fotoğraf) bilgisi (Senin vizyon senaryon için çok kritik!)
+    media_url = form_data.get('MediaUrl0', None)
 
-    # Mesaj bilgileri
-    message = form_data.get("Body", "")
-    sender = form_data.get("From", "")
+    # Terminal logları (Sistemi izleyebilmen için)
+    print("Müşteriden Gelen Mesaj:", incoming_msg)
+    print("Müşteri Numarası:", sender)
+    if media_url: print("Görsel URL:", media_url)
 
-    # Medya bilgileri
-    media_url = form_data.get("MediaUrl0", None)
-    media_type = form_data.get("MediaContentType0", None)
+    # Ajanımızı (Yapay Zekayı) çalıştırıyoruz
+    agent_response = run_agent(incoming_msg, sender, media_url)
 
-    # Terminal logları
-    print("Parsed WhatsApp message:", message)
-    print("Sender:", sender)
-    print("Media URL:", media_url)
-    print("Media Type:", media_type)
-
-    # AI Agent çağır
-    agent_response = run_agent(
-        message=message,
-        sender=sender
-    )
-
-    # API response
-    return {
-        "status": "received",
-        "sender": sender,
-        "message": message,
-        "media_url": media_url,
-        "media_type": media_type,
-        "agent_response": agent_response
-    }
+    # TWILIO'NUN İSTEDİĞİ XML FORMATINA ÇEVİRME
+    twiml = MessagingResponse()
+    twiml.message(agent_response)
+    
+    return Response(content=str(twiml), media_type="application/xml")
 
 if __name__ == "__main__":
     uvicorn.run(

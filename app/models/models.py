@@ -35,3 +35,20 @@ class ReturnItem(Base):
     ai_verdict = Column(String, nullable=True) # Approve, Reject, Manual Review
     status = Column(String, default="Pending") # Pending, Approved, Rejected
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class Order(Base):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True, index=True)
+    order_code = Column(String, unique=True, index=True)
+    customer_name = Column(String)
+    status = Column(String)
+    cargo_company = Column(String, nullable=True)
+    tracking_no = Column(String, nullable=True)
+
+class Product(Base):
+    __tablename__ = "products"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    stock = Column(Integer)
+    critical_limit = Column(Integer)
+    order_amount = Column(Integer)
