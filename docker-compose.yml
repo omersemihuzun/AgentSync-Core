@@ -8,16 +8,20 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-    environment:
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+    env_file:
+      - .env
     restart: always
 
-  # İleride eklenecek olan Frontend (Streamlit) servisi için taslak:
-  # frontend:
-  #   build: ./frontend_dir
-  #   container_name: agentsync_frontend
-  #   ports:
-  #     - "8501:8501"
-  #   depends_on:
-  #     - api
+  frontend:
+    build: .
+    container_name: agentsync_frontend
+    command: streamlit run app/frontend/dashboard.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    restart: always
